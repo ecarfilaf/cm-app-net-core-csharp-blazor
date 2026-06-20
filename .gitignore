@@ -55,3 +55,32 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+## Build outputs
+[Bb]in/
+[Oo]bj/
+[Mm]odules/
+*.exe
+*.dll
+*.pdb
+*.suo
+
+## IDE and Editor Specific Files
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+
+## Client-side dependencies (Optional)
+# Uncomment if you use npm/node tasks for Razor styles or Tailwind
+node_modules/
+
+## Razor / Web Specific Artifacts
+# Automatically generated CSS/JS compiled output (if applicable)
+*/wwwroot/lib/ 
+
+## Environment Secrets
+# Never commit your local secrets or raw appsettings with passwords
+appsettings.Development.json
+*.secrets.json
