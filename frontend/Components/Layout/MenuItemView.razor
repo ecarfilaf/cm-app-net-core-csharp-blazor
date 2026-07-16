@@ -1,0 +1,73 @@
+@namespace frontend.Components.Layout
+@using frontend.Services
+
+<div class="menu-item">
+    @if (Item.HasChildren)
+    {
+        <div class="sidebar-link toggle @(Item.Active ? "active" : "")" style="@IndentStyle" @onclick="Toggle">
+            @if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <i class="bi @Item.Icon"></i>
+            }
+            <span class="sidebar-link__text">@Item.Text</span>
+
+            @if (!string.IsNullOrEmpty(Item.Badge))
+            {
+                <span class="menu-badge menu-badge--@Item.BadgeVariant">@Item.Badge</span>
+            }
+
+            <i class="bi bi-chevron-down chevron @(_expanded ? "chevron--open" : "")"></i>
+        </div>
+    }
+    else
+    {
+        <NavLink class="sidebar-link" style="@IndentStyle" href="@(Item.Url ?? "#")" Match="NavLinkMatch.All">
+            @if (!string.IsNullOrEmpty(Item.Icon))
+            {
+                <i class="bi @Item.Icon"></i>
+            }
+            <span class="sidebar-link__text">@Item.Text</span>
+
+            @if (!string.IsNullOrEmpty(Item.Badge))
+            {
+                <span class="menu-badge menu-badge--@Item.BadgeVariant">@Item.Badge</span>
+            }
+        </NavLink>
+    }
+
+    @if (Item.HasChildren)
+    {
+        <div class="submenu @(_expanded ? "submenu--open" : "")">
+            @foreach (var child in Item.Children)
+            {
+                <MenuItemView Item="child" Depth="@(Depth + 1)" />
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public MenuItem Item { get; set; } = default!;
+
+    [Parameter]
+    public int Depth { get; set; }
+
+    private bool _expanded;
+
+    /// <summary>
+    /// Indentación calculada en C# en vez de selectores CSS anidados por profundidad:
+    /// más robusto frente a reglas de scoping de CSS isolation en componentes hijos (NavLink).
+    /// </summary>
+    private string IndentStyle => $"padding-left: {1 + Depth}rem;";
+
+    protected override void OnInitialized()
+    {
+        _expanded = Item.Expanded;
+    }
+
+    private void Toggle()
+    {
+        _expanded = !_expanded;
+    }
+}

@@ -1,30 +1,35 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">frontend</a>
+﻿@using frontend.Services
+@inject MenuService MenuSvc
+
+<aside class="app-sidebar">
+	<div class="sidebar-brand">
+		<i class="bi bi-boxes me-2"></i> CMSYSADMIN
+	</div>
+
+    @foreach (var menuSection in _menu.Sections)
+    {
+        @if (!string.IsNullOrEmpty(menuSection.Title))
+        {
+            <div class="sidebar-section">@menuSection.Title</div>
+        }
+
+        @foreach (var item in menuSection.Items)
+        {
+            <MenuItemView Item="item" Depth="0" />
+        }
+    }
+
+    <div class="sidebar-footer">
+        <small class="text-muted d-block">Conectado como:</small>
+        <strong>frontend</strong>
     </div>
-</div>
+</aside>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+@code {
+    private MenuConfig _menu = new();
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+    protected override void OnInitialized()
+    {
+        _menu = MenuSvc.Load();
+    }
+}

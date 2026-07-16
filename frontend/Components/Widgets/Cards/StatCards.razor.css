@@ -1,0 +1,27 @@
+.stat-card {
+    border: none;
+    border-radius: .35rem;
+    color: #fff;
+    overflow: hidden;
+}
+
+.stat-card__body {
+    padding: 1rem 1.25rem;
+}
+
+.stat-card__footer {
+    background: rgba(0,0,0,.12);
+    padding: .5rem 1.25rem;
+    font-size: .85rem;
+}
+
+.stat-card__footer a,
+.stat-card__footer {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.stat-card--primary { background-color: #0d6efd; }
+.stat-card--warning  { background-color: #f0ad4e; }
+.stat-card--success  { background-color: #1e7e34; }
+.stat-card--danger   { background-color: #c0392b; }

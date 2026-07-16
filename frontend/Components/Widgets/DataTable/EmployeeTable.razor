@@ -1,0 +1,72 @@
+@namespace frontend.Components.Widgets.DataTable
+@using frontend.Components.Widgets.DataTable.Models
+
+<div class="mf-widget-card">
+    <div class="mf-widget-card__header">
+        <i class="bi bi-table me-1"></i> DataTable Example
+    </div>
+    <div class="mf-widget-card__body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <select class="form-select form-select-sm" style="width:auto" @bind="_pageSize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select>
+                <span class="text-muted small">entries per page</span>
+            </div>
+
+            <input class="form-control form-control-sm" style="max-width:220px"
+                   placeholder="Search..." @bind="_searchTerm" @bind:event="oninput" />
+        </div>
+
+        <QuickGrid Items="@FilteredEmployees" Pagination="@_pagination" class="table table-hover align-middle">
+            <PropertyColumn Property="@(e => e.Name)" Sortable="true" />
+            <PropertyColumn Property="@(e => e.Position)" Sortable="true" />
+            <PropertyColumn Property="@(e => e.Office)" Sortable="true" />
+            <PropertyColumn Property="@(e => e.Age)" Sortable="true" />
+            <PropertyColumn Title="Start date" Property="@(e => e.StartDate)" Sortable="true" />
+            <PropertyColumn Title="Salary" Property="@(e => e.Salary)" Format="C0" Sortable="true" />
+        </QuickGrid>
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="text-muted small">
+                Página @(_pagination.CurrentPageIndex + 1) de @(_pagination.TotalItemCount is int n ? Math.Max(1, (int)Math.Ceiling(n / (double)_pagination.ItemsPerPage)) : 1)
+            </span>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-secondary" disabled="@(_pagination.CurrentPageIndex == 0)"
+                        @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex - 1)">
+                    Previous
+                </button>
+                <button class="btn btn-outline-secondary"
+                        @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex + 1)">
+                    Next
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<Employee> DataSource { get; set; } = EmployeeSampleData.All;
+
+    private string _searchTerm = string.Empty;
+    private int _pageSize = 5;
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 5 };
+
+    private IQueryable<Employee> FilteredEmployees =>
+        DataSource
+            .Where(e => string.IsNullOrWhiteSpace(_searchTerm)
+                        || e.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || e.Position.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || e.Office.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase))
+            .AsQueryable();
+
+    protected override void OnParametersSet()
+    {
+        _pagination.ItemsPerPage = _pageSize;
+    }
+}

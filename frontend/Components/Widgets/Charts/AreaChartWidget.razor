@@ -1,0 +1,27 @@
+@namespace frontend.Components.Widgets.Charts
+@inject IJSRuntime JS
+
+<div class="mf-widget-card">
+    <div class="mf-widget-card__header">
+        <i class="bi bi-graph-up-arrow me-1"></i> @Title
+    </div>
+    <div class="mf-widget-card__body">
+        <canvas id="@_canvasId" height="110"></canvas>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Area Chart";
+    [Parameter] public List<string> Labels { get; set; } = new() { "Mar 1", "Mar 3", "Mar 5", "Mar 7", "Mar 9", "Mar 11", "Mar 13" };
+    [Parameter] public List<int> Data { get; set; } = new() { 10000, 30000, 25000, 32000, 27000, 33000, 39000 };
+
+    private readonly string _canvasId = $"mf-area-{Guid.NewGuid():N}";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("mfCharts.renderAreaChart", _canvasId, Labels, Data);
+        }
+    }
+}

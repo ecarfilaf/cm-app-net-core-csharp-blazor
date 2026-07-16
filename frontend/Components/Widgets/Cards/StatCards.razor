@@ -1,0 +1,31 @@
+@namespace frontend.Components.Widgets.Cards
+
+<div class="row g-4">
+    @foreach (var card in Cards)
+    {
+        <div class="col-sm-6 col-xl-3">
+            <div class="stat-card stat-card--@card.Variant shadow-sm">
+                <div class="stat-card__body">
+                    <div class="fs-5">@card.Title</div>
+                </div>
+                <a href="@card.DetailsUrl" class="stat-card__footer d-flex justify-content-between">
+                    <span>View Details</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<StatCardItem> Cards { get; set; } = new()
+    {
+        new("Primary Card", "primary", "#"),
+        new("Warning Card", "warning", "#"),
+        new("Success Card", "success", "#"),
+        new("Danger Card", "danger", "#"),
+    };
+
+    public record StatCardItem(string Title, string Variant, string DetailsUrl);
+}

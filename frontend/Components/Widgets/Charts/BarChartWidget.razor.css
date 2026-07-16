@@ -1,0 +1,19 @@
+.mf-widget-card {
+    background: #fff;
+    border: 1px solid #e3e6ea;
+    border-radius: .35rem;
+    overflow: hidden;
+    height: 100%;
+}
+
+.mf-widget-card__header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e3e6ea;
+    padding: .65rem 1rem;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.mf-widget-card__body {
+    padding: 1rem;
+}

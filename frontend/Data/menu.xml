@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Menu>
+
+  <!-- Sección sin título visible, como "Dashboards" en la imagen -->
+  <Section>
+    <Item Text="Dashboards" Icon="bi-sliders" Badge="5" BadgeVariant="primary" Expanded="true">
+      <Item Text="Default" Url="/" />
+      <Item Text="Analytics" Url="/dashboards/analytics" Active="true" />
+      <Item Text="SaaS" Url="/dashboards/saas" />
+      <Item Text="Social" Url="/dashboards/social" />
+      <Item Text="Crypto" Url="/dashboards/crypto" />
+    </Item>
+  </Section>
+
+  <Section Title="Apps">
+    <Item Text="E-Commerce" Icon="bi-bag" Url="/apps/ecommerce">
+      <Item Text="Products" Url="/apps/ecommerce/products" />
+      <Item Text="Orders" Url="/apps/ecommerce/orders" />
+      <Item Text="Customers" Url="/apps/ecommerce/customers" />
+    </Item>
+    <Item Text="Projects" Icon="bi-kanban" Url="/apps/projects">
+      <Item Text="List" Url="/apps/projects/list" />
+      <Item Text="Board" Url="/apps/projects/board" />
+    </Item>
+    <Item Text="Chat" Icon="bi-chat-dots" Url="/apps/chat" />
+    <Item Text="File Manager" Icon="bi-folder2" Url="/apps/file-manager" Badge="New" BadgeVariant="info" />
+    <Item Text="Calendar" Icon="bi-calendar3" Url="/apps/calendar" />
+    <Item Text="Email" Icon="bi-envelope" Url="/apps/email" Badge="New" BadgeVariant="info" />
+    <Item Text="Tasks" Icon="bi-list-check" Url="/apps/tasks">
+      <Item Text="List" Url="/apps/tasks/list" />
+      <Item Text="Kanban" Url="/apps/tasks/kanban" />
+    </Item>
+  </Section>
+
+  <Section Title="Pages">
+    <Item Text="Pages" Icon="bi-layout-text-window" Url="/pages">
+      <Item Text="Pricing" Url="/pages/pricing" />
+      <Item Text="FAQ" Url="/pages/faq" />
+      <Item Text="Contact" Url="/pages/contact" />
+    </Item>
+    <Item Text="Auth" Icon="bi-person-badge" Url="/auth" Badge="Special" BadgeVariant="secondary" />
+  </Section>
+
+</Menu>
