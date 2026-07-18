@@ -10,12 +10,6 @@
     min-width: 0;
 }
 
-.app-topbar {
-    background: #fff;
-    border-bottom: 1px solid #e3e6ea;
-    padding: .5rem 0;
-}
-
 .app-main {
     padding: 1.5rem;
     background-color: #f4f6f9;

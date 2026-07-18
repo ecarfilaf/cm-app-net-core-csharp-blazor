@@ -1,0 +1,119 @@
+@namespace frontend.Components.Layout
+@inject IJSRuntime JS
+
+<nav class="navbar navbar-expand app-topbar">
+    <div class="container-fluid">
+        <button class="btn btn-link text-dark d-md-none" type="button">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+
+        <form class="d-none d-md-flex ms-2" role="search">
+            <input class="form-control" type="search" placeholder="Search for..." />
+        </form>
+
+        <div class="ms-auto d-flex align-items-center gap-3 topbar-icons">
+
+            <a href="/apps/email" class="icon-btn" title="Email">
+                <i class="bi bi-envelope-fill"></i>
+                <span class="icon-badge icon-badge--green">4+</span>
+            </a>
+
+            <a href="#" class="icon-btn" title="Notificaciones">
+                <i class="bi bi-bell-fill"></i>
+                <span class="icon-badge icon-badge--red">99+</span>
+            </a>
+
+            <button class="icon-btn" type="button" title="Cambiar tema" @onclick="ToggleTheme">
+                <i class="bi @(_isDark ? "bi-moon-stars-fill" : "bi-sun-fill")"></i>
+            </button>
+
+            <div class="dropdown-wrapper">
+                <button class="icon-btn flag-btn" type="button" @onclick="ToggleLanguageMenu">
+                    <span class="flag">@_currentLanguage.Flag</span>
+                </button>
+
+                @if (_showLanguageMenu)
+                {
+                    <div class="dropdown-panel" @onclick:stopPropagation="true">
+                        @foreach (var lang in _languages)
+                        {
+                            <button type="button" class="dropdown-row" @onclick="() => SelectLanguage(lang)">
+                                <span class="flag">@lang.Flag</span>
+                                <span>@lang.Name</span>
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="user-chip">
+                <img src="@_currentUser.AvatarUrl" alt="@_currentUser.Name" class="user-avatar" />
+                <span class="user-name">@_currentUser.Name</span>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+@if (_showLanguageMenu)
+{
+    <div class="dropdown-backdrop" @onclick="CloseMenus"></div>
+}
+
+@code {
+    private bool _isDark;
+    private bool _showLanguageMenu;
+
+    private readonly (string Name, string AvatarUrl) _currentUser =
+        ("Chris Wood", "https://ui-avatars.com/api/?name=Chris+Wood&background=0D6EFD&color=fff&rounded=true");
+
+    private readonly List<LanguageOption> _languages = new()
+    {
+        new("🇺🇸", "English"),
+        new("🇪🇸", "Spanish"),
+        new("🇩🇪", "German"),
+        new("🇳🇱", "Dutch"),
+    };
+
+    private LanguageOption _currentLanguage = null!;
+
+    protected override void OnInitialized()
+    {
+        _currentLanguage = _languages[0];
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var saved = await JS.InvokeAsync<string>("mfTheme.current");
+            _isDark = saved == "dark";
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleLanguageMenu()
+    {
+        _showLanguageMenu = !_showLanguageMenu;
+    }
+
+    private void SelectLanguage(LanguageOption lang)
+    {
+        _currentLanguage = lang;
+        _showLanguageMenu = false;
+        // Acá es donde engancharías tu mecanismo real de i18n
+        // (ej. CultureInfo.CurrentCulture, o un servicio de localización propio).
+    }
+
+    private void CloseMenus()
+    {
+        _showLanguageMenu = false;
+    }
+
+    private async Task ToggleTheme()
+    {
+        _isDark = await JS.InvokeAsync<string>("mfTheme.toggle") == "dark";
+    }
+
+    private record LanguageOption(string Flag, string Name);
+}

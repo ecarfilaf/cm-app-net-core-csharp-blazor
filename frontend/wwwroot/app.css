@@ -49,3 +49,52 @@ h1:focus {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+/* ---------- Theme oscuro básico, controlado por [data-theme] en <html> ---------- */
+[data-theme="dark"] body {
+    background-color: #16181d;
+    color: #e9ecef;
+}
+
+[data-theme="dark"] .app-main {
+    background-color: #16181d;
+}
+
+[data-theme="dark"] .app-topbar {
+    background: #1f2229;
+    border-color: #2b2f38;
+}
+
+[data-theme="dark"] .mf-widget-card {
+    background: #1f2229;
+    border-color: #2b2f38;
+    color: #e9ecef;
+}
+
+[data-theme="dark"] .mf-widget-card__header {
+    background: #262a33;
+    border-color: #2b2f38;
+    color: #e9ecef;
+}
+
+[data-theme="dark"] .icon-btn {
+    color: #adb5bd;
+}
+
+[data-theme="dark"] .icon-btn:hover {
+    background: #262a33;
+    color: #fff;
+}
+
+[data-theme="dark"] .dropdown-panel {
+    background: #1f2229;
+    color: #e9ecef;
+}
+
+[data-theme="dark"] .dropdown-row {
+    color: #e9ecef;
+}
+
+[data-theme="dark"] .dropdown-row:hover {
+    background: #262a33;
+}

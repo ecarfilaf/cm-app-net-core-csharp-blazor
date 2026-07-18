@@ -1,0 +1,211 @@
+@page "/apps/admin/users"
+@using frontend.Services
+
+<PageTitle>Gestión de Usuarios</PageTitle>
+
+<h1 class="h3 mb-1">Gestión de Usuarios</h1>
+
+<div class="mf-widget-card">
+    <div class="mf-widget-card__header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-people me-1"></i> Usuarios</span>
+        <button class="btn btn-primary btn-sm" @onclick="OpenCreateModal">
+            <i class="bi bi-plus-lg me-1"></i> Nuevo usuario
+        </button>
+    </div>
+
+    <div class="mf-widget-card__body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <select class="form-select form-select-sm" style="width:auto" @bind="_pageSize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                </select>
+                <span class="text-muted small">entries per page</span>
+            </div>
+
+            <input class="form-control form-control-sm" style="max-width:240px"
+                   placeholder="Buscar por nombre o email..." @bind="_searchTerm" @bind:event="oninput" />
+        </div>
+
+        <QuickGrid Items="@FilteredUsers" Pagination="@_pagination" class="table table-hover align-middle">
+            <PropertyColumn Property="@(u => u.Name)" Title="Nombre" Sortable="true" />
+            <PropertyColumn Property="@(u => u.Email)" Sortable="true" />
+            <TemplateColumn Title="Rol" Sortable="true" SortBy="@(GridSort<User>.ByAscending(u => u.Role))">
+                <span class="role-badge role-badge--@(context.Role.ToLowerInvariant())">@context.Role</span>
+            </TemplateColumn>
+            <TemplateColumn Title="Estado" Sortable="true" SortBy="@(GridSort<User>.ByAscending(u => u.Active))">
+                <span class="status-badge status-badge--@(context.Active ? "active" : "inactive")">
+                    @(context.Active ? "Activo" : "Inactivo")
+                </span>
+            </TemplateColumn>
+            <PropertyColumn Title="Alta" Property="@(u => u.CreatedAt)" Sortable="true" />
+            <TemplateColumn Title="Acciones">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => OpenEditModal(context)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteUser(context)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </TemplateColumn>
+        </QuickGrid>
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="text-muted small">
+                Página @(_pagination.CurrentPageIndex + 1) de @(_pagination.TotalItemCount is int n ? Math.Max(1, (int)Math.Ceiling(n / (double)_pagination.ItemsPerPage)) : 1)
+            </span>
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-secondary" disabled="@(_pagination.CurrentPageIndex == 0)"
+                        @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex - 1)">
+                    Previous
+                </button>
+                <button class="btn btn-outline-secondary"
+                        @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex + 1)">
+                    Next
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@if (_showModal)
+{
+    <div class="mf-modal-backdrop" @onclick="CloseModal">
+        <div class="mf-modal" @onclick:stopPropagation="true">
+            <div class="mf-modal__header">
+                <h2 class="h5 mb-0">@(_editingId is null ? "Nuevo usuario" : "Editar usuario")</h2>
+                <button class="btn-close" @onclick="CloseModal"></button>
+            </div>
+
+            <EditForm Model="_form" OnValidSubmit="SaveUser">
+                <DataAnnotationsValidator />
+
+                <div class="mf-modal__body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <InputText class="form-control" @bind-Value="_form.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <InputText class="form-control" type="email" @bind-Value="_form.Email" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <InputSelect class="form-select" @bind-Value="_form.Role">
+                            <option value="Admin">Admin</option>
+                            <option value="Editor">Editor</option>
+                            <option value="Viewer">Viewer</option>
+                        </InputSelect>
+                    </div>
+                    <div class="form-check">
+                        <InputCheckbox class="form-check-input" @bind-Value="_form.Active" id="activeCheck" />
+                        <label class="form-check-label" for="activeCheck">Usuario activo</label>
+                    </div>
+                </div>
+
+                <div class="mf-modal__footer">
+                    <button type="button" class="btn btn-outline-secondary" @onclick="CloseModal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject] private UserService UserSvc { get; set; } = default!;
+
+    private string _searchTerm = string.Empty;
+    private int _pageSize = 5;
+    private readonly PaginationState _pagination = new() { ItemsPerPage = 5 };
+
+    private bool _showModal;
+    private int? _editingId;
+    private UserFormModel _form = new();
+
+    private IQueryable<User> FilteredUsers =>
+        UserSvc.GetAll()
+            .Where(u => string.IsNullOrWhiteSpace(_searchTerm)
+                        || u.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || u.Email.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase))
+            .AsQueryable();
+
+    protected override void OnParametersSet()
+    {
+        _pagination.ItemsPerPage = _pageSize;
+    }
+
+    private void OpenCreateModal()
+    {
+        _editingId = null;
+        _form = new UserFormModel();
+        _showModal = true;
+    }
+
+    private void OpenEditModal(User user)
+    {
+        _editingId = user.Id;
+        _form = new UserFormModel
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Role = user.Role,
+            Active = user.Active
+        };
+        _showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        _showModal = false;
+    }
+
+    private void SaveUser()
+    {
+        if (_editingId is int id)
+        {
+            UserSvc.Update(new User
+            {
+                Id = id,
+                Name = _form.Name,
+                Email = _form.Email,
+                Role = _form.Role,
+                Active = _form.Active
+            });
+        }
+        else
+        {
+            UserSvc.Add(new User
+            {
+                Name = _form.Name,
+                Email = _form.Email,
+                Role = _form.Role,
+                Active = _form.Active
+            });
+        }
+
+        _showModal = false;
+    }
+
+    private void DeleteUser(User user)
+    {
+        UserSvc.Delete(user.Id);
+    }
+
+    private class UserFormModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El nombre es obligatorio")]
+        public string Name { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El email es obligatorio")]
+        [System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage = "Email inválido")]
+        public string Email { get; set; } = string.Empty;
+
+        public string Role { get; set; } = "Viewer";
+        public bool Active { get; set; } = true;
+    }
+}

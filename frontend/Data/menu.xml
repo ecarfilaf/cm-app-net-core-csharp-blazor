@@ -13,10 +13,11 @@
   </Section>
 
   <Section Title="Apps">
-    <Item Text="E-Commerce" Icon="bi-bag" Url="/apps/ecommerce">
-      <Item Text="Products" Url="/apps/ecommerce/products" />
-      <Item Text="Orders" Url="/apps/ecommerce/orders" />
-      <Item Text="Customers" Url="/apps/ecommerce/customers" />
+    <Item Text="Admin" Icon="bi-shield-lock" Url="/apps/admin">
+      <Item Text="Users" Url="/apps/admin/users" />
+      <Item Text="Products" Url="/apps/admin/products" />
+      <Item Text="Orders" Url="/apps/admin/orders" />
+      <Item Text="Customers" Url="/apps/admin/customers" />
     </Item>
     <Item Text="Projects" Icon="bi-kanban" Url="/apps/projects">
       <Item Text="List" Url="/apps/projects/list" />

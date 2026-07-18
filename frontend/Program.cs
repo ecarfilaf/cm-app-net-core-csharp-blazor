@@ -8,6 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<MenuService>();
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
