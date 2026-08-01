@@ -34,8 +34,20 @@ public class UserService
         var existing = GetById(updated.Id);
         if (existing is null) return false;
 
-        existing.Name = updated.Name;
-        existing.Email = updated.Email;
+        existing.rut = updated.rut;
+        existing.dv = updated.dv;
+        existing.nombres = updated.nombres;
+        existing.apaterno = updated.apaterno;
+        existing.amaterno = updated.amaterno;
+        existing.usuario = updated.usuario;
+        existing.clave = updated.clave;
+        existing.codestado = updated.codestado;
+        existing.codtipousuario = updated.codtipousuario;
+        existing.fecvigencia = updated.fecvigencia;
+        existing.email = updated.email;
+        existing.avatar = updated.avatar;
+        existing.user = updated.user;
+        existing.fun = updated.fun;
         existing.Role = updated.Role;
         existing.Active = updated.Active;
         return true;
@@ -45,9 +57,9 @@ public class UserService
 
     private void Seed()
     {
-        Add(new User { Name = "Esteban Carfilaf", Email = "esteban@example.com", Role = "Admin", Active = true });
-        Add(new User { Name = "Lucía Ferreyra", Email = "lucia.ferreyra@example.com", Role = "Editor", Active = true });
-        Add(new User { Name = "Martín Gómez", Email = "martin.gomez@example.com", Role = "Viewer", Active = false });
-        Add(new User { Name = "Sofía Ramírez", Email = "sofia.ramirez@example.com", Role = "Editor", Active = true });
+        Add(new User { nombres = "Esteban", apaterno = "Carfilaf", email = "esteban@example.com", Role = "Admin", Active = true });
+        Add(new User { nombres = "Lucía", apaterno = "Ferreyra", email = "lucia.ferreyra@example.com", Role = "Editor", Active = true });
+        Add(new User { nombres = "Martín", apaterno = "Gómez", email = "martin.gomez@example.com", Role = "Viewer", Active = false });
+        Add(new User { nombres = "Sofía", apaterno = "Ramírez", email = "sofia.ramirez@example.com", Role = "Editor", Active = true });
     }
 }

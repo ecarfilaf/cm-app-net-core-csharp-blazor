@@ -30,8 +30,8 @@
         </div>
 
         <QuickGrid Items="@FilteredUsers" Pagination="@_pagination" class="table table-hover align-middle">
-            <PropertyColumn Property="@(u => u.Name)" Title="Nombre" Sortable="true" />
-            <PropertyColumn Property="@(u => u.Email)" Sortable="true" />
+            <PropertyColumn Property="@(u => u.nombres)" Title="Nombre" Sortable="true" />
+            <PropertyColumn Property="@(u => u.email)" Title="Email" Sortable="true" />
             <TemplateColumn Title="Rol" Sortable="true" SortBy="@(GridSort<User>.ByAscending(u => u.Role))">
                 <span class="role-badge role-badge--@(context.Role.ToLowerInvariant())">@context.Role</span>
             </TemplateColumn>
@@ -86,8 +86,16 @@
 
                 <div class="mf-modal__body">
                     <div class="mb-3">
-                        <label class="form-label">Nombre</label>
+                        <label class="form-label">Nombres</label>
                         <InputText class="form-control" @bind-Value="_form.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido Paterno</label>
+                        <InputText class="form-control" @bind-Value="_form.LastName" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido Materno</label>
+                        <InputText class="form-control" @bind-Value="_form.MiddleName" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
@@ -130,8 +138,8 @@
     private IQueryable<User> FilteredUsers =>
         UserSvc.GetAll()
             .Where(u => string.IsNullOrWhiteSpace(_searchTerm)
-                        || u.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
-                        || u.Email.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase))
+                        || u.nombres.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || u.email.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase))
             .AsQueryable();
 
     protected override void OnParametersSet()
@@ -151,8 +159,10 @@
         _editingId = user.Id;
         _form = new UserFormModel
         {
-            Name = user.Name,
-            Email = user.Email,
+            Name = user.nombres,
+            LastName = user.apaterno,
+            MiddleName = user.amaterno,
+            Email = user.email,
             Role = user.Role,
             Active = user.Active
         };
@@ -171,8 +181,8 @@
             UserSvc.Update(new User
             {
                 Id = id,
-                Name = _form.Name,
-                Email = _form.Email,
+                nombres = _form.Name,
+                email = _form.Email,
                 Role = _form.Role,
                 Active = _form.Active
             });
@@ -181,8 +191,8 @@
         {
             UserSvc.Add(new User
             {
-                Name = _form.Name,
-                Email = _form.Email,
+                nombres = _form.Name,
+                email = _form.Email,
                 Role = _form.Role,
                 Active = _form.Active
             });
@@ -200,6 +210,12 @@
     {
         [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El nombre es obligatorio")]
         public string Name { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El apellido paterno es obligatorio")]
+        public string LastName { get; set; } = string.Empty;
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El apellido materno es obligatorio")]
+        public string MiddleName { get; set; } = string.Empty;
 
         [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El email es obligatorio")]
         [System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage = "Email inválido")]
