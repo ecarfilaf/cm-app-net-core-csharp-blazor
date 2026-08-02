@@ -1,3 +1,4 @@
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace frontend.Services;
@@ -41,6 +42,18 @@ public class MenuService
 
         using var stream = File.OpenRead(path);
         var serializer = new XmlSerializer(typeof(MenuConfig));
-        return (MenuConfig?)serializer.Deserialize(stream) ?? new MenuConfig();
+
+        try
+        {
+            return (MenuConfig?)serializer.Deserialize(stream) ?? new MenuConfig();
+        }
+        catch (InvalidOperationException ex) when (ex.InnerException is XmlException xmlEx)
+        {
+            _logger.LogError(
+                "Error de sintaxis en {Path} (línea {Line}, columna {Column}): {Message}. " +
+                "Se usa un menú vacío hasta que se corrija el XML.",
+                path, xmlEx.LineNumber, xmlEx.LinePosition, xmlEx.Message);
+            return new MenuConfig();
+        }
     }
 }

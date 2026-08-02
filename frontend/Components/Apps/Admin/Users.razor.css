@@ -32,7 +32,6 @@
 .status-badge--active   { background: #d1e7dd; color: #0f5132; }
 .status-badge--inactive { background: #f8d7da; color: #842029; }
 
-/* ---------- Modal propio, sin depender del JS de Bootstrap ---------- */
 .mf-modal-backdrop {
     position: fixed;
     inset: 0;

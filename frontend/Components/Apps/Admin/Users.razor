@@ -8,7 +8,7 @@
 <div class="mf-widget-card">
     <div class="mf-widget-card__header d-flex justify-content-between align-items-center">
         <span><i class="bi bi-people me-1"></i> Usuarios</span>
-        <button class="btn btn-primary btn-sm" @onclick="OpenCreateModal">
+        <button type="button" class="btn btn-primary btn-sm" @onclick="OpenCreateModal">
             <i class="bi bi-plus-lg me-1"></i> Nuevo usuario
         </button>
     </div>
@@ -43,10 +43,10 @@
             <PropertyColumn Title="Alta" Property="@(u => u.CreatedAt)" Sortable="true" />
             <TemplateColumn Title="Acciones">
                 <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => OpenEditModal(context)">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" @onclick="() => OpenEditModal(context)">
                         <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteUser(context)">
+                    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => DeleteUser(context)">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
@@ -58,11 +58,11 @@
                 Página @(_pagination.CurrentPageIndex + 1) de @(_pagination.TotalItemCount is int n ? Math.Max(1, (int)Math.Ceiling(n / (double)_pagination.ItemsPerPage)) : 1)
             </span>
             <div class="btn-group btn-group-sm">
-                <button class="btn btn-outline-secondary" disabled="@(_pagination.CurrentPageIndex == 0)"
+                <button type="button" class="btn btn-outline-secondary" disabled="@(_pagination.CurrentPageIndex == 0)"
                         @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex - 1)">
                     Previous
                 </button>
-                <button class="btn btn-outline-secondary"
+                <button type="button" class="btn btn-outline-secondary"
                         @onclick="() => _pagination.SetCurrentPageIndexAsync(_pagination.CurrentPageIndex + 1)">
                     Next
                 </button>
@@ -78,7 +78,7 @@
         <div class="mf-modal" @onclick:stopPropagation="true">
             <div class="mf-modal__header">
                 <h2 class="h5 mb-0">@(_editingId is null ? "Nuevo usuario" : "Editar usuario")</h2>
-                <button class="btn-close" @onclick="CloseModal"></button>
+                <button type="button" class="btn-close" @onclick="CloseModal"></button>
             </div>
 
             <EditForm Model="_form" OnValidSubmit="SaveUser">

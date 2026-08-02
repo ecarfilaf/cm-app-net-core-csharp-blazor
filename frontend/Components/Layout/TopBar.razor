@@ -24,7 +24,7 @@
             </a>
 
             <button class="icon-btn" type="button" title="Cambiar tema" @onclick="ToggleTheme">
-                <i class="bi @(_isDark ? "bi-moon-stars-fill" : "bi-sun-fill")"></i>
+                <i class="bi @(_isDark ? "bi-sun-fill" : "bi-moon-stars-fill")"></i>
             </button>
 
             <div class="dropdown-wrapper">
@@ -86,9 +86,21 @@
     {
         if (firstRender)
         {
-            var saved = await JS.InvokeAsync<string>("mfTheme.current");
-            _isDark = saved == "dark";
-            StateHasChanged();
+            try
+            {
+                var saved = await JS.InvokeAsync<string>("mfTheme.current");
+                var stillDark = saved == "dark";
+                if (stillDark != _isDark)
+                {
+                    _isDark = stillDark;
+                    StateHasChanged();
+                }
+            }
+            catch (JSException)
+            {
+                // theme.js todavía no está listo (ej. primer render prerenderizado); se ignora,
+                // el usuario puede togglear manualmente y a partir de ahí queda sincronizado.
+            }
         }
     }
 
@@ -101,8 +113,6 @@
     {
         _currentLanguage = lang;
         _showLanguageMenu = false;
-        // Acá es donde engancharías tu mecanismo real de i18n
-        // (ej. CultureInfo.CurrentCulture, o un servicio de localización propio).
     }
 
     private void CloseMenus()
@@ -112,7 +122,15 @@
 
     private async Task ToggleTheme()
     {
-        _isDark = await JS.InvokeAsync<string>("mfTheme.toggle") == "dark";
+        try
+        {
+            var result = await JS.InvokeAsync<string>("mfTheme.toggle");
+            _isDark = result == "dark";
+        }
+        catch (JSException ex)
+        {
+            Console.Error.WriteLine($"No se pudo cambiar el tema: {ex.Message}");
+        }
     }
 
     private record LanguageOption(string Flag, string Name);

@@ -56,8 +56,6 @@
     border-radius: .35rem;
 }
 
-/* El framework alterna estas clases en #components-reconnect-modal
-   según el estado de la conexión (connecting / retrying / failed / rejected). */
 #components-reconnect-modal.components-reconnect-show .components-reconnect-visible,
 #components-reconnect-modal.components-reconnect-retrying .components-reconnect-visible {
     display: block;

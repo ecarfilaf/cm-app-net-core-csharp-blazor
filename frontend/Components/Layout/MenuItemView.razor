@@ -55,10 +55,6 @@
 
     private bool _expanded;
 
-    /// <summary>
-    /// Indentación calculada en C# en vez de selectores CSS anidados por profundidad:
-    /// más robusto frente a reglas de scoping de CSS isolation en componentes hijos (NavLink).
-    /// </summary>
     private string IndentStyle => $"padding-left: {1 + Depth}rem;";
 
     protected override void OnInitialized()

@@ -1,14 +1,6 @@
-// JS colocado del componente ReconnectModal.
-// Escucha el evento estándar del framework "components-reconnect-state-changed"
-// y alterna clases sobre el <dialog> para reflejar el estado de la conexión.
-
 const modal = document.getElementById('components-reconnect-modal');
 
 if (modal) {
-    if (typeof modal.showModal === 'function' && !modal.open) {
-        // El dialog se abre/cierra según el estado; arranca cerrado.
-    }
-
     document.addEventListener('components-reconnect-state-changed', (event) => {
         const state = event.detail?.state;
 

@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="@Assets["frontend.styles.css"]" />
     <link rel="stylesheet" href="_content/Microsoft.AspNetCore.Components.QuickGrid/QuickGrid.css" />
 
+    <!-- SIEMPRE al final de los <link> de estilos: necesita ganar los empates de especificidad
+         contra el CSS aislado de cada componente para que el modo oscuro se aplique de verdad. -->
+    <link rel="stylesheet" href="@Assets["css/theme-dark.css"]" />
+
     <!-- Se carga temprano en <head> para aplicar el tema guardado antes del primer render -->
     <script src="@Assets["js/theme.js"]"></script>
 

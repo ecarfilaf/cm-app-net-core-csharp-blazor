@@ -1,0 +1,130 @@
+/*
+  Este archivo se carga DELIBERADAMENTE al final del <head>, después de
+  frontend.styles.css (el bundle de CSS aislado de los componentes) y de
+  QuickGrid.css. Los selectores de acá tienen la misma especificidad que
+  muchos de los estilos por componente (clase + atributo de scope), así
+  que quien cargue último gana el empate en la cascada.
+*/
+
+html[data-theme="dark"] body {
+    background-color: #16181d;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .app-main {
+    background-color: #16181d;
+}
+
+html[data-theme="dark"] .app-topbar {
+    background: #1f2229;
+    border-color: #2b2f38;
+}
+
+html[data-theme="dark"] .user-chip {
+    border-color: #2b2f38;
+}
+
+html[data-theme="dark"] .mf-widget-card {
+    background: #1f2229;
+    border-color: #2b2f38;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .mf-widget-card__header {
+    background: #262a33;
+    border-color: #2b2f38;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .text-muted {
+    color: #9aa1ab !important;
+}
+
+html[data-theme="dark"] .icon-btn {
+    color: #adb5bd;
+}
+
+html[data-theme="dark"] .icon-btn:hover {
+    background: #262a33;
+    color: #fff;
+}
+
+html[data-theme="dark"] .dropdown-panel {
+    background: #1f2229;
+    color: #e9ecef;
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.5);
+}
+
+html[data-theme="dark"] .dropdown-row {
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .dropdown-row:hover {
+    background: #262a33;
+}
+
+html[data-theme="dark"] .table {
+    color: #e9ecef;
+    border-color: #2b2f38;
+}
+
+html[data-theme="dark"] .table > :not(caption) > * > * {
+    background-color: transparent;
+    color: #e9ecef;
+    border-bottom-color: #2b2f38;
+}
+
+html[data-theme="dark"] .table thead th,
+html[data-theme="dark"] .table th {
+    color: #e9ecef !important;
+    background-color: transparent !important;
+}
+
+html[data-theme="dark"] .table th * {
+    color: inherit !important;
+}
+
+html[data-theme="dark"] .table-hover > tbody > tr:hover > * {
+    background-color: #262a33;
+}
+
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select {
+    background-color: #262a33;
+    border-color: #3a3f4b;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .form-control::placeholder {
+    color: #7d8590;
+}
+
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .form-select:focus {
+    background-color: #262a33;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .mf-modal {
+    background: #1f2229;
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .mf-modal__header,
+html[data-theme="dark"] .mf-modal__footer {
+    border-color: #2b2f38;
+}
+
+html[data-theme="dark"] .form-label {
+    color: #e9ecef;
+}
+
+html[data-theme="dark"] .btn-outline-secondary {
+    color: #adb5bd;
+    border-color: #3a3f4b;
+}
+
+html[data-theme="dark"] .btn-outline-secondary:hover {
+    background: #262a33;
+    color: #fff;
+}
