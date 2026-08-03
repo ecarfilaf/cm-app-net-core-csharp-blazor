@@ -57,9 +57,9 @@ public class UserService
 
     private void Seed()
     {
-        Add(new User { nombres = "Esteban", apaterno = "Carfilaf", email = "esteban@example.com", Role = "Admin", Active = true });
-        Add(new User { nombres = "Lucía", apaterno = "Ferreyra", email = "lucia.ferreyra@example.com", Role = "Editor", Active = true });
-        Add(new User { nombres = "Martín", apaterno = "Gómez", email = "martin.gomez@example.com", Role = "Viewer", Active = false });
-        Add(new User { nombres = "Sofía", apaterno = "Ramírez", email = "sofia.ramirez@example.com", Role = "Editor", Active = true });
+        Add(new User { rut = "12345678", dv = "9", nombres = "Esteban", apaterno = "Carfilaf", amaterno = "Nuñez", email = "esteban@example.com", Role = "Admin", Active = true });
+        Add(new User { rut = "87654321", dv = "0", nombres = "Lucía", apaterno = "Ferreyra", amaterno = "López", email = "lucia.ferreyra@example.com", Role = "Editor", Active = true });
+        Add(new User { rut = "11223344", dv = "5", nombres = "Martín", apaterno = "Gómez", amaterno = "Rodríguez", email = "martin.gomez@example.com", Role = "Viewer", Active = false });
+        Add(new User { rut = "55667788", dv = "1", nombres = "Sofía", apaterno = "Ramírez", amaterno = "Sánchez", email = "sofia.ramirez@example.com", Role = "Editor", Active = true });
     }
 }
